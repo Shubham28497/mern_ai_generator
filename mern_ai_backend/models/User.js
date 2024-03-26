@@ -17,4 +17,15 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  trailExpires: {
+    type: Date,
+  },
+  subscription: {
+    type: String,
+    enum: ["Trail", "Free", "Basic", "Premium"],
+  },
+  apiRequestCount: {
+    type: Number,
+    default:0,
+  },
 });
