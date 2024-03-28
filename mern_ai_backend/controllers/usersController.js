@@ -24,6 +24,10 @@ const register = async (req, res) => {
       email,
       password,
     });
+    //*add the date the trail will end
+    newUser.trailExpires = new Date(
+      new Date().getTime() + newUser.trialPeriod * 24 * 60 * 60 * 1000
+    );
     res.json({
       status: true,
       message: "Registration was successfull",
