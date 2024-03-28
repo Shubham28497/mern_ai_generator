@@ -33,8 +33,15 @@ const register = async (req, res) => {
     res.json({
       status: true,
       message: "Registration was successfull",
+      user:{
+        username,
+        email,
+        password:hashedPassword
+      }
     });
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(error)
+  }
 };
 //*Login
 //*logout
