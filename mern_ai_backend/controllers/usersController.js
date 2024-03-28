@@ -28,6 +28,8 @@ const register = async (req, res) => {
     newUser.trailExpires = new Date(
       new Date().getTime() + newUser.trialPeriod * 24 * 60 * 60 * 1000
     );
+    //* save the user
+    await newUser.save()
     res.json({
       status: true,
       message: "Registration was successfull",
