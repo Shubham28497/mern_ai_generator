@@ -1,3 +1,4 @@
+const User=require("../models/User")
 //*Registration
 const register = (req, res) => {
   res.json({
