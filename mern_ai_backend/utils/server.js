@@ -1,6 +1,7 @@
 const express = require("express");
 const userRouter = require("../routes/userRouter");
 const connectDB = require("./connectDb");
+const { errorHandler } = require("../middlewares/errorMiddlewares");
 const app = express();
 const PORT = process.env.PORT || 5000;
 connectDB();
