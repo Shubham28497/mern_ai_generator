@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 //*Registration
-const register = async (req, res) => {
+const register = async (req, res,next) => {
   try {
     const { username, email, password } = req.body;
     //* Validate
@@ -40,7 +40,8 @@ const register = async (req, res) => {
       }
     });
   } catch (error) {
-    throw new Error(error)
+    // throw new Error(error)
+    next(error)
   }
 };
 //*Login
