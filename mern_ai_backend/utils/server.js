@@ -4,6 +4,7 @@ const connectDB = require("./connectDb");
 const app = express();
 const PORT = process.env.PORT || 5000;
 connectDB();
+app.use(express.json());
 //*Routes
 app.use("/api/v1/users", userRouter);
 
