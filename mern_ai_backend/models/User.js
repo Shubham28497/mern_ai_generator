@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     trailActive: {
       type: Boolean,
-      // required: true,
+      required: true,
     },
     trailExpires: {
       type: Date,
