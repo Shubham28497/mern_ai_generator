@@ -3,9 +3,9 @@ const User = require("../models/User");
 //*Registration
 const register = async (req, res,next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password,trailActive } = req.body;
     //* Validate
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !trailActive) {
       res.status(400);
       throw new Error("All fields are required");
     }
@@ -23,6 +23,7 @@ const register = async (req, res,next) => {
       username,
       email,
       password,
+      trailActive,
     });
     //*add the date the trail will end
     newUser.trailExpires = new Date(
@@ -33,11 +34,12 @@ const register = async (req, res,next) => {
     res.json({
       status: true,
       message: "Registration was successfull",
-      user:{
+      user: {
         username,
         email,
-        password:hashedPassword
-      }
+        password: hashedPassword,
+        trailActive,
+      },
     });
   } catch (error) {
     // throw new Error(error)
