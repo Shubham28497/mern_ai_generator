@@ -51,6 +51,12 @@ if(!user){
   res.status(401)
   throw new Error("Invalid email or password")
 }
+//* check if password is valid
+const isMatch=await bcrypt.compare(password,user?.hashedPassword)
+if(!isMatch){
+  res.status(401)
+  throw new Error("Invalid email or password");
+}
 })
 //*logout
 //*Profile
