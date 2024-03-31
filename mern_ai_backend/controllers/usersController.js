@@ -1,52 +1,49 @@
 const bcrypt = require("bcryptjs");
+const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
 //*Registration
-const register = async (req, res,next) => {
-  try {
-    const { username, email, password,trailActive } = req.body;
-    //* Validate
-    if (!username || !email || !password || !trailActive) {
-      res.status(400);
-      throw new Error("All fields are required");
-    }
-    //* check the email is taken
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      res.status(400);
-      throw new Error("User already exists");
-    }
-    //* hash the user pass
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    //* new user
-    const newUser = new User({
+const register = asyncHandler(async (req, res, next) => {
+  const { username, email, password, trailActive } = req.body;
+  //* Validate
+  if (!username || !email || !password || !trailActive) {
+    res.status(400);
+    throw new Error("All fields are required");
+  }
+  //* check the email is taken
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+  //* hash the user pass
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  //* new user
+  const newUser = new User({
+    username,
+    email,
+    password,
+    trailActive,
+  });
+  //*add the date the trail will end
+  newUser.trailExpires = new Date(
+    new Date().getTime() + newUser.trialPeriod * 24 * 60 * 60 * 1000
+  );
+  //* save the user
+  await newUser.save();
+  res.json({
+    status: true,
+    message: "Registration was successfull",
+    user: {
       username,
       email,
-      password,
+      password: hashedPassword,
       trailActive,
-    });
-    //*add the date the trail will end
-    newUser.trailExpires = new Date(
-      new Date().getTime() + newUser.trialPeriod * 24 * 60 * 60 * 1000
-    );
-    //* save the user
-    await newUser.save()
-    res.json({
-      status: true,
-      message: "Registration was successfull",
-      user: {
-        username,
-        email,
-        password: hashedPassword,
-        trailActive,
-      },
-    });
-  } catch (error) {
-    // throw new Error(error)
-    next(error)
-  }
-};
+    },
+  });
+});
 //*Login
+
 //*logout
 //*Profile
 //*Check user auth status
