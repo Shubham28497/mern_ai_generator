@@ -43,7 +43,15 @@ const register = asyncHandler(async (req, res, next) => {
   });
 });
 //*Login
-
+const login=asyncHandler(async(req,res)=>{
+const {email,password}=req.body
+//* check for user mail
+const user=await User.findOne({email})
+if(!user){  
+  res.status(401)
+  throw new Error("Invalid email or password")
+}
+})
 //*logout
 //*Profile
 //*Check user auth status
