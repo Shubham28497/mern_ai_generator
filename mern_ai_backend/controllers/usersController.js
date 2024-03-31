@@ -22,7 +22,7 @@ const register = asyncHandler(async (req, res, next) => {
   const newUser = new User({
     username,
     email,
-    password,
+    password:hashedPassword,
     trailActive,
   });
   //*add the date the trail will end
@@ -52,7 +52,7 @@ if(!user){
   throw new Error("Invalid email or password")
 }
 //* check if password is valid
-const isMatch=await bcrypt.compare(password,user?.hashedPassword)
+const isMatch=await bcrypt.compare(password,user?.password)
 if(!isMatch){
   res.status(401)
   throw new Error("Invalid email or password");
