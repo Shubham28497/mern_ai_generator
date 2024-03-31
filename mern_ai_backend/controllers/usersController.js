@@ -57,10 +57,22 @@ if(!isMatch){
   res.status(401)
   throw new Error("Invalid email or password");
 }
+//*gen token jwt
+//*set the token into cookie(http only)
+
+//*send the response
+res.json({
+  status:"Success",
+  _id:user?._id,
+  message:"Login Success",
+  username:user?.username,
+  email:user?.email
+})
 })
 //*logout
 //*Profile
 //*Check user auth status
 module.exports = {
   register,
+  login
 };
