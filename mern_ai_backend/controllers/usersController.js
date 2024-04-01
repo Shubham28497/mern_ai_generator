@@ -65,7 +65,12 @@ const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, {
 });
 console.log(token)
 //*set the token into cookie(http only)
-
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV==="production",
+  sameSite:"strict",
+  maxAge:24*60*60*1000,
+});
 //*send the response
 res.json({
   status:"Success",
