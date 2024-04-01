@@ -81,6 +81,10 @@ res.json({
 })
 })
 //*logout
+const logout=asyncHandler(async(req,res)=>{
+  res.cookie('token',{maxAge:1})
+  res.status(200).json({message:"Logged out successfully"})
+})
 //*Profile
 //*Check user auth status
 module.exports = {
