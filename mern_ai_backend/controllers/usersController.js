@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
+const jwt=require("jsonwebtoken")
+
 //*Registration
 const register = asyncHandler(async (req, res, next) => {
   const { username, email, password, trailActive } = req.body;
@@ -58,6 +60,10 @@ if(!isMatch){
   throw new Error("Invalid email or password");
 }
 //*gen token jwt
+const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, {
+  expiresIn: "3d",
+});
+console.log(token)
 //*set the token into cookie(http only)
 
 //*send the response
