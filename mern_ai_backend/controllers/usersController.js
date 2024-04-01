@@ -89,5 +89,6 @@ const logout=asyncHandler(async(req,res)=>{
 //*Check user auth status
 module.exports = {
   register,
-  login
+  login,
+  logout
 };
