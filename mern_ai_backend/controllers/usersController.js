@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
-const jwt=require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 //*Registration
 const register = asyncHandler(async (req, res, next) => {
@@ -24,7 +24,7 @@ const register = asyncHandler(async (req, res, next) => {
   const newUser = new User({
     username,
     email,
-    password:hashedPassword,
+    password: hashedPassword,
     trailActive,
   });
   //*add the date the trail will end
@@ -45,50 +45,50 @@ const register = asyncHandler(async (req, res, next) => {
   });
 });
 //*Login
-const login=asyncHandler(async(req,res)=>{
-const {email,password}=req.body
-//* check for user mail
-const user=await User.findOne({email})
-if(!user){  
-  res.status(401)
-  throw new Error("Invalid email or password")
-}
-//* check if password is valid
-const isMatch=await bcrypt.compare(password,user?.password)
-if(!isMatch){
-  res.status(401)
-  throw new Error("Invalid email or password");
-}
-//*gen token jwt
-const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, {
-  expiresIn: "3d",
+const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  //* check for user mail
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+  //* check if password is valid
+  const isMatch = await bcrypt.compare(password, user?.password);
+  if (!isMatch) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+  //*gen token jwt
+  const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, {
+    expiresIn: "3d",
+  });
+  console.log(token);
+  //*set the token into cookie(http only)
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+  //*send the response
+  res.json({
+    status: "Success",
+    _id: user?._id,
+    message: "Login Success",
+    username: user?.username,
+    email: user?.email,
+  });
 });
-console.log(token)
-//*set the token into cookie(http only)
-res.cookie("token", token, {
-  httpOnly: true,
-  secure: process.env.NODE_ENV==="production",
-  sameSite:"strict",
-  maxAge:24*60*60*1000,
-});
-//*send the response
-res.json({
-  status:"Success",
-  _id:user?._id,
-  message:"Login Success",
-  username:user?.username,
-  email:user?.email
-})
-})
 //*logout
-const logout=asyncHandler(async(req,res)=>{
-  res.cookie('token',{maxAge:1})
-  res.status(200).json({message:"Logged out successfully"})
-})
+const logout = asyncHandler(async (req, res) => {
+  res.cookie("token", "", { maxAge: 1 });
+  res.status(200).json({ message: "Logged out successfully" });
+});
 //*Profile
 //*Check user auth status
 module.exports = {
   register,
   login,
-  logout
+  logout,
 };
