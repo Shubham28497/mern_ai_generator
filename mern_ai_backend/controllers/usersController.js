@@ -86,6 +86,16 @@ const logout = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 });
 //*Profile
+const userProfile=asyncHandler(async(req,res)=>{
+  const id = "6608f0f726d0bbc8f588c5b3";
+  const user=await User.findById(id)
+  if(user){
+    res.status(200).json({
+      status:"Success",
+      user,
+    })
+  }
+})
 //*Check user auth status
 module.exports = {
   register,
