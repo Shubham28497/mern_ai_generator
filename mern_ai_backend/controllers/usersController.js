@@ -87,7 +87,9 @@ const logout = asyncHandler(async (req, res) => {
 });
 //*Profile
 const userProfile=asyncHandler(async(req,res)=>{
-  const id = "6608f0f726d0bbc8f588c5b3";
+console.log(req.user)
+  // const id = "6608f0f726d0bbc8f588c5b3";
+  const id=req.user
   const user=await User.findById(id).select("-password")
   if(user){
     res.status(200).json({
