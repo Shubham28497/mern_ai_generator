@@ -1,5 +1,5 @@
 const express = require("express");
-// require("dotenv").config()
+const cookieParser=require("cookie-parser")
 require("dotenv").config()
 
 const userRouter = require("./routes/userRouter");
@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 //* middlewares
 app.use(express.json());
+app.use(cookieParser()) //pass the cookie automatically
 //*Routes
 app.use("/api/v1/users", userRouter);
 //* error handler middlewares
