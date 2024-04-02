@@ -1,18 +1,21 @@
 const express = require("express");
-const cookieParser=require("cookie-parser")
-require("dotenv").config()
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
 
 const userRouter = require("./routes/userRouter");
 const connectDB = require("./utils/connectDb");
 const { errorHandler } = require("./middlewares/errorMiddlewares");
+const openAIRouter = require("./routes/openAiRouter");
 const app = express();
 const PORT = process.env.PORT || 5000;
 connectDB();
 //* middlewares
 app.use(express.json());
-app.use(cookieParser()) //pass the cookie automatically
+app.use(cookieParser()); //pass the cookie automatically
 //*Routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/openai", openAIRouter);
+
 //* error handler middlewares
 app.use(errorHandler);
 //* start the server
