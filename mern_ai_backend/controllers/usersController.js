@@ -95,10 +95,15 @@ const userProfile=asyncHandler(async(req,res)=>{
       user,
     })
   }
-})
+  else{
+    res.status(404)
+    throw new Error("User not found")
+  }
+  })
 //*Check user auth status
 module.exports = {
   register,
   login,
   logout,
+  userProfile
 };
