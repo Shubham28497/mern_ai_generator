@@ -1,14 +1,24 @@
 const asyncHandler=require("express-async-handler")
 const axios=require("axios")
+// Ensure this is securely stored
+
 const openAIController = asyncHandler(async (req, res) => {
   const { prompt } = req.body;
   try {
     const response = await axios.post(
-      "https://api.openai.com/v1/completions",
+      "https://api.openai.com/v1/chat/completions",
       {
-        model: "gpt-3.5-turbo-instruct",
-        prompt,
-        max_tokens: 10,
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful assistant.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
       },
       {
         headers: {
@@ -17,7 +27,9 @@ const openAIController = asyncHandler(async (req, res) => {
         },
       }
     );
-    const content = response?.data?.choices[0].text?.trim();
+
+    // Assuming the response includes a message from the assistant
+    const content = response?.data?.choices[0]?.message?.content?.trim();
 
     res.status(200).json({
       status: "success",
